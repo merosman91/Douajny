@@ -28,13 +28,9 @@ export default function Cycles() {
 
   const activate = async id => {
     await setActiveCycle(id)
+    await reloadCycle()
     load()
   }
-  const activate = async id => {
-  await setActiveCycle(id)
-  await reloadCycle()
-  load()
-}
 
   return (
     <div className="p-6">
@@ -70,4 +66,4 @@ export default function Cycles() {
       ))}
     </div>
   )
-}
+        }
