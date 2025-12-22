@@ -1,17 +1,17 @@
 import { openDB } from "./db"
 
-export const addExpense = async expense => {
+export async function addExpense(expense) {
   const db = await openDB()
   const tx = db.transaction("expenses", "readwrite")
-  tx.objectStore("expenses").add(expense)
+  tx.objectStore("expenses").put(expense)
 }
 
-export const getExpensesByCycle = async cycleId => {
+export async function getExpensesByCycle(cycleId) {
   const db = await openDB()
-  return new Promise(resolve => {
+  return new Promise(res => {
     const tx = db.transaction("expenses", "readonly")
-    const store = tx.objectStore("expenses")
-    const index = store.index("cycleId")
-    index.getAll(cycleId).onsuccess = e => resolve(e.target.result)
+    const req = tx.objectStore("expenses").getAll()
+    req.onsuccess = () =>
+      res(req.result.filter(e => e.cycleId === cycleId))
   })
-}
+      }
