@@ -1,4 +1,8 @@
 export default {
+  appName: "Douajny",
   dashboard: "Dashboard",
-  appName: "Douajny"
+  cycles: "Cycles",
+  settings: "Settings",
+  theme: "Theme",
+  language: "Language"
 }
