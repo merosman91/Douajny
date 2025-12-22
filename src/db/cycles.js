@@ -1,40 +1,47 @@
 import { openDB } from "./db"
 
-export const getCycles = async () => {
+export async function getCycles() {
   const db = await openDB()
-  return new Promise(resolve => {
+  return new Promise(res => {
     const tx = db.transaction("cycles", "readonly")
-    const store = tx.objectStore("cycles")
-    const req = store.getAll()
-    req.onsuccess = () => resolve(req.result)
+    const req = tx.objectStore("cycles").getAll()
+    req.onsuccess = () => res(req.result)
   })
 }
 
-export const addCycle = async cycle => {
+export async function addCycle(cycle) {
   const db = await openDB()
   const tx = db.transaction("cycles", "readwrite")
-  tx.objectStore("cycles").add(cycle)
+  tx.objectStore("cycles").put({ ...cycle, active: false })
 }
 
-export const setActiveCycle = async id => {
+export async function setActiveCycle(id) {
+  const cycles = await getCycles()
   const db = await openDB()
   const tx = db.transaction("cycles", "readwrite")
   const store = tx.objectStore("cycles")
 
-  store.getAll().onsuccess = e => {
-    e.target.result.forEach(cycle => {
-      cycle.active = cycle.id === id
-      store.put(cycle)
-    })
-  }
+  cycles.forEach(c =>
+    store.put({ ...c, active: c.id === id })
+  )
 }
 
-export const getActiveCycle = async () => {
+export async function getActiveCycle() {
+  const cycles = await getCycles()
+  return cycles.find(c => c.active)
+}
+
+export async function resetCycle(cycleId) {
   const db = await openDB()
-  return new Promise(resolve => {
-    const tx = db.transaction("cycles", "readonly")
-    const store = tx.objectStore("cycles")
-    const index = store.index("active")
-    index.get(true).onsuccess = e => resolve(e.target.result)
+  const stores = ["inventory", "expenses", "sales", "mortality"]
+
+  stores.forEach(name => {
+    const tx = db.transaction(name, "readwrite")
+    const store = tx.objectStore(name)
+    store.getAll().onsuccess = e => {
+      e.target.result
+        .filter(i => i.cycleId === cycleId)
+        .forEach(i => store.delete(i.id))
+    }
   })
 }
