@@ -1,4 +1,5 @@
 import Cycles from "../pages/Cycles"
+import Inventory from "../pages/Inventory"
 
 export default function Layout() {
   return (
@@ -7,6 +8,7 @@ export default function Layout() {
       <div className="flex-1">
         <Header />
         <Cycles />
+        <Inventory />
       </div>
     </div>
   )
