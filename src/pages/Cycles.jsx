@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { getCycles, addCycle, setActiveCycle } from "../db/cycles"
+import { useActiveCycle } from "../hooks/useActiveCycle"
 
 export default function Cycles() {
   const [cycles, setCycles] = useState([])
   const [name, setName] = useState("")
+  const { reloadCycle } = useActiveCycle()
 
   const load = async () => {
     setCycles(await getCycles())
@@ -28,6 +30,11 @@ export default function Cycles() {
     await setActiveCycle(id)
     load()
   }
+  const activate = async id => {
+  await setActiveCycle(id)
+  await reloadCycle()
+  load()
+}
 
   return (
     <div className="p-6">
