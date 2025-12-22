@@ -1,4 +1,8 @@
 export default {
+  appName: "دواجني",
   dashboard: "لوحة التحكم",
-  appName: "دواجني"
+  cycles: "الدورات",
+  settings: "الإعدادات",
+  theme: "المظهر",
+  language: "اللغة"
 }
