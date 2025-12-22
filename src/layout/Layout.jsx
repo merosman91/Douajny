@@ -1,14 +1,12 @@
-import Sidebar from "./Sidebar"
-import Header from "./Header"
-import Dashboard from "../pages/Dashboard"
+import Cycles from "../pages/Cycles"
 
 export default function Layout() {
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1">
         <Header />
-        <Dashboard />
+        <Cycles />
       </div>
     </div>
   )
