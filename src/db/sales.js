@@ -1,12 +1,12 @@
 import { openDB } from "./db"
 
-export async function addExpense(sales) {
+export async function addSales(sales) {
   const db = await openDB()
   const tx = db.transaction("sales", "readwrite")
   tx.objectStore("sales").put(sales)
 }
 
-export async function getExpensesByCycle(cycleId) {
+export async function getSalesByCycle(cycleId) {
   const db = await openDB()
   return new Promise(res => {
     const tx = db.transaction("sales", "readonly")
