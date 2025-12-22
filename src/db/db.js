@@ -1,5 +1,5 @@
 const DB_NAME = "douajny-db"
-const DB_VERSION = 4
+const DB_VERSION = 5
 
 export const openDB = () => {
   return new Promise((resolve, reject) => {
@@ -48,6 +48,15 @@ export const openDB = () => {
         store.createIndex("cycleId", "cycleId", { unique: false })
        }
     }
+
+    if (!db.objectStoreNames.contains("sales")) {
+      const store = db.createObjectStore("sales", {
+        keyPath: "id",
+        autoIncrement: true
+      })
+       store.createIndex("cycleId", "cycleId", { unique: false })
+      }
+     
 
     request.onsuccess = () => resolve(request.result)
     request.onerror = () => reject("DB Error")
