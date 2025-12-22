@@ -22,3 +22,17 @@ export const updateInventoryItem = async item => {
   const tx = db.transaction("inventory", "readwrite")
   tx.objectStore("inventory").put(item)
   }
+
+export const deductInventory = async (itemId, amount) => {
+  const db = await openDB()
+  const tx = db.transaction("inventory", "readwrite")
+  const store = tx.objectStore("inventory")
+
+  store.get(itemId).onsuccess = e => {
+    const item = e.target.result
+    if (!item) return
+    item.quantity -= amount
+    if (item.quantity < 0) item.quantity = 0
+    store.put(item)
+  }
+                 }
